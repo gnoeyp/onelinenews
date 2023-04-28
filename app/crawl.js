@@ -1,8 +1,5 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-require("dotenv").config({
-  path: "./.env.local",
-});
 
 const getContent = async (link) => {
   const { data } = await axios.get(link);
@@ -27,6 +24,7 @@ const crawlNews = async () => {
       link: $(el).find("a").attr("href"),
     }))
     .toArray();
+  console.log(news);
 
   const articles = await Promise.all(
     news.map(async ({ title, link }) => ({
@@ -35,6 +33,7 @@ const crawlNews = async () => {
       article: await getContent(link),
     }))
   );
+  console.log(articles);
   return articles;
 };
 
