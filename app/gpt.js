@@ -6,7 +6,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-export const summarizeUsingGPT = async (article) => {
+const summarizeUsingGPT = async (article) => {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: "아래 신문기사를 한 문장으로 요약해줘\n\n" + article,
@@ -15,3 +15,5 @@ export const summarizeUsingGPT = async (article) => {
   });
   return response.data.choices[0].text;
 };
+
+exports.summarizeUsingGPT = summarizeUsingGPT;

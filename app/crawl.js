@@ -14,7 +14,7 @@ const getContent = async (link) => {
     .join("");
 };
 
-export const crawlNews = async () => {
+const crawlNews = async () => {
   const { data } = await axios.get("https://news.daum.net/");
 
   const $ = cheerio.load(data);
@@ -37,3 +37,5 @@ export const crawlNews = async () => {
   );
   return articles;
 };
+
+exports.crawlNews = crawlNews;
