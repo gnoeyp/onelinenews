@@ -5,6 +5,7 @@ require("dotenv").config({
   path: "./.env.local",
 });
 const nodemailer = require("nodemailer");
+const cron = reqquire("node-cron");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -99,14 +100,16 @@ const generateContent = async (articles) => {
     .join("");
 };
 
-const main = async () => {
-  const articles = await crawl();
-
-  const content = await generateContent(articles);
-
-  const info = await send(content);
-
-  console.log(info);
-};
-
-main();
+cron.schedule(
+  "0 7 * * *",
+  async () => {
+    const articles = await crawl();
+    const content = await generateContent(articles);
+    const info = await send(content);
+    console.log(info);
+  },
+  {
+    scheduled: true,
+    timezone: "Asia/Seoul",
+  }
+);
