@@ -1,0 +1,7 @@
+services:
+  app:
+    image: node:18
+    volumes:
+      - ./app:/workspace
+    working_dir: /workspace
+    entrypoint: bash -c "npm install && npm run run"
