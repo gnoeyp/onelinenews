@@ -5,6 +5,7 @@ const cron = require("node-cron");
 const { send } = require("./email");
 const { summarizeUsingGPT } = require("./gpt");
 const { crawlNews } = require("./crawl");
+const { dbClient } = require("./db");
 
 const generateContent = async (articles) => {
   const results = await Promise.allSettled(
@@ -37,8 +38,19 @@ cron.schedule(
     console.log("-----------CONTENT------------");
     console.log(content);
     console.log("SENDING EMAIL...");
-    const info = await send(content);
-    console.log(info);
+
+    dbClient.query('SELECT * FROM "user"', (error, result) => {
+      if (error) {
+        console.log(error);
+      }
+
+      if (result) {
+        result.rows.forEach((row) => {
+          console.log("TO: ", row.email);
+          send(content, row.email);
+        });
+      }
+    });
   },
   {
     scheduled: true,
