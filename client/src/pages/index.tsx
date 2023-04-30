@@ -48,7 +48,8 @@ export default function Home() {
         <Space direction="vertical" align="center">
           <Typography.Title level={1}>한줄뉴스</Typography.Title>
           <Typography.Paragraph>
-            오늘의 주요 뉴스를 한 줄로 요약해서 이메일로 보내드려요.
+            오늘의 주요 뉴스를 한 줄로 요약해서 이메일로 보내드려요. 발송 시간은
+            매일 오전 7시입니다.
           </Typography.Paragraph>
           <Form form={form} layout="inline" onFinish={handleFinish}>
             <Form.Item
