@@ -1,6 +1,3 @@
-require("dotenv").config({
-  path: "./.env.local",
-});
 const cron = require("node-cron");
 const { send } = require("./email");
 const { summarizeUsingGPT } = require("./gpt");

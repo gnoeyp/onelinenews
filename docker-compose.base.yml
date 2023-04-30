@@ -9,6 +9,11 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      MAILER_EMAIL: ${MAILER_EMAIL}
+      MAILER_CLIENT_ID: ${MAILER_CLIENT_ID}
+      MAILER_CLIENT_PWD: ${MAILER_CLIENT_PWD}
+      MAILER_REFTKN: ${MAILER_REFTKN}
     depends_on:
       db:
         condition: service_healthy
