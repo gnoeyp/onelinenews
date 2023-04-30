@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://server:3000/api/:path*",
+        destination: `http://${process.env.SERVER_HOST}:3000/api/:path*`,
       },
     ];
   },

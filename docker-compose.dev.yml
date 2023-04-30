@@ -1,12 +1,19 @@
 services:
   server:
     entrypoint: bash -c "npm install && npm run start:debug"
+
+  db:
+    volumes:
+      - ./dev_data/postgres:/var/lib/postgresql/data
+
   client:
     image: node:18
     volumes:
       - ./client:/workspace
     working_dir: /workspace
     entrypoint: bash -c "npm install && npm run dev"
+    environment:
+      SERVER_HOST: ${SERVER_HOST}
     ports:
       - 5000:3000
 
@@ -18,4 +25,4 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ./data/pgadmin:/var/lib/pgadmin
+      - ./dev_data/pgadmin:/var/lib/pgadmin
