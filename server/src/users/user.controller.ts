@@ -1,8 +1,16 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
+import { QueryFailedError } from 'typeorm';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
-@Controller('users')
+@Controller('api/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -16,7 +24,17 @@ export class UserController {
 
   @Post()
   async saveUser(@Body() user: User) {
-    await this.userService.saveUser(user);
+    try {
+      await this.userService.saveUser(user);
+    } catch (e) {
+      if (e instanceof QueryFailedError) {
+        throw new HttpException('Already exists', HttpStatus.CONFLICT);
+      }
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
     return {
       statusCode: 201,
     };
