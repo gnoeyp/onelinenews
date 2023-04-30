@@ -1,0 +1,28 @@
+services:
+  core:
+    image: node:18
+    volumes:
+      - ./core:/workspace
+    working_dir: /workspace
+    entrypoint: bash -c "npm install && npm run run"
+
+  server:
+    image: node:18
+    volumes:
+      - ./server:/workspace
+    working_dir: /workspace
+    ports:
+      - 3000:3000
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+
+  db:
+    image: postgres:15.2
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data

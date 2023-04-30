@@ -11,8 +11,8 @@ if [[ "$1" != "run" ]] && [[ "$1" != "stop" ]]; then
 fi
 
 if [[ "$1" == "run" ]]; then
-    docker-compose -f ./docker-compose.base.yml -f ./docker-compose.dev.yml --env-file ./config/.env.dev up -d
+    docker-compose -f ./docker-compose.base.yml -f ./docker-compose.prod.yml --env-file ./config/.env.prod up -d
 else
-    docker-compose -f ./docker-compose.base.yml -f ./docker-compose.dev.yml --env-file ./config/.env.dev down
+    docker-compose -f ./docker-compose.base.yml -f ./docker-compose.prod.yml --env-file ./config/.env.prod down
 fi
 
