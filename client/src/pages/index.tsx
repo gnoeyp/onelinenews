@@ -1,7 +1,30 @@
 import Head from "next/head";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Space, Typography, message } from "antd";
 
 export default function Home() {
+  const [form] = Form.useForm();
+  const handleFinish = async ({ email }: { email: string }) => {
+    const response = await fetch("/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    switch (response.status) {
+      case 201:
+        form.resetFields();
+        message.success("Thank you for subscribing!");
+        break;
+      case 409:
+        message.error("You already subscribed");
+        break;
+      default:
+        message.error("Unknown error");
+    }
+  };
+
   return (
     <>
       <Head>
@@ -10,17 +33,39 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <Form layout="inline">
-          <Form.Item name="email" rules={[{ required: true, type: "email" }]}>
-            <Input placeholder="Enter your email" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
+      <main
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          padding: "300px 0",
+        }}
+      >
+        <Space direction="vertical" align="center">
+          <Typography.Title level={1}>한줄뉴스</Typography.Title>
+          <Typography.Paragraph>
+            오늘의 주요 뉴스를 한 줄로 요약해서 이메일로 보내드려요.
+          </Typography.Paragraph>
+          <Form form={form} layout="inline" onFinish={handleFinish}>
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, type: "email", message: "Invalid email" },
+              ]}
+            >
+              <Input placeholder="Enter your email" />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Subscribe
+              </Button>
+            </Form.Item>
+          </Form>
+        </Space>
       </main>
     </>
   );
