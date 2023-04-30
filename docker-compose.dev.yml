@@ -19,6 +19,15 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
 
+  client:
+    image: node:18
+    volumes:
+      - ./client:/workspace
+    working_dir: /workspace
+    entrypoint: bash -c "npm install && npm run dev"
+    ports:
+      - 5000:3000
+
   db:
     image: postgres:15.2
     environment:
